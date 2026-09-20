@@ -14,6 +14,7 @@ The assistant reads this page, takes the two files it needs, writes your slides,
 - The standard every deck follows: [PLAYER.md](PLAYER.md)
 - Where this is going and how to keep branches aligned: [docs/DIRECTION.md](docs/DIRECTION.md)
 - Contributing and branch conventions: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Developing the kit itself: [docs/ENGINEERING.md](docs/ENGINEERING.md) and [CLAUDE.md](CLAUDE.md)
 
 ## What you get in every deck
 

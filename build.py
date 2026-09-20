@@ -29,7 +29,7 @@ if '</div>' not in head or 'id="stage"' not in head:
     sys.exit('content must contain <div id="viewport"><div id="stage"> ... </div></div> before the player')
 
 banner=('\n\n<!-- ============================================================\n'
-        '     ZONE 3 · PLAYER (inlined from player-kit; do not edit here, edit the kit and rebuild)\n'
+        '     ZONE 3 · PLAYER (inlined from deck-kit; do not edit here, edit the kit and rebuild)\n'
         '     ============================================================ -->\n')
 out=head+banner+'<style id="player-css">\n'+css+'\n</style>\n<script id="player-js">\n'+js+'\n</script>\n'
 io.open(out_path,'w',encoding='utf-8').write(out)

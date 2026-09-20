@@ -51,8 +51,11 @@ Recommended note shape: open line first, the body for speaking to the content an
 
 Rules the deck must respect:
 
-- Do not position, size or hide `.slide` in deck CSS. The player owns `position`, `inset`, `width`, `height`, `display` and `overflow` on `#stage > section.slide`. Style the inside of a slide freely (background, colour, padding, typography).
-- Do not use the ids `viewport`, `stage`, `progress`, `hud`, `ribbonwrap`, `ribbon`, `tools`, `notes`, `hold`, `ink`, `fx`, `lens`, `bottom`, `clock`, `keys` for anything else.
+- Do not position, size or hide `.slide` in deck CSS. The player owns `position`, `inset`, `width`, `height`, `display`, `overflow` and `isolation` on `section.slide`. Style the inside of a slide freely (background, colour, padding, typography).
+- Start every deck selector with `.slide` (`.slide h2`, `.slide.dark .card`). The index is a slide the player generates, and the presenter view lives in the same page, so a bare `h2`, `p`, `*` or `body` rule reaches them. The player defends its own layout (it sets `box-sizing` on its chrome and spells out the index heading), but it cannot anticipate every deck rule.
+- Each slide is its own stacking context. A `z-index` inside a slide orders things within that slide and never rises above the ink, the magnifier or the hold screen.
+- Keep images inside the file (CSS, inline SVG, data URI). A hotlinked image may be blocked, moved or offline when the deck is presented.
+- Do not use the ids `viewport`, `stage`, `progress`, `hud`, `ribbonwrap`, `ribbon`, `tools`, `notes`, `hold`, `ink`, `fx`, `lens`, `bottom`, `clock`, `keys`, `pk-present` for anything else.
 - Slides are cloned for thumbnails and the magnifier. Avoid ids inside slides (they would be duplicated) and avoid scripts inside slides.
 - A slide's `aside.notes` is never displayed on the slide itself.
 
@@ -62,13 +65,19 @@ Two-file: place `player.css` and `player.js` beside the deck and add the link an
 
 Single-file: `python build.py my-content.html my-deck.html`. The content file is your zones 1 and 2 (styles and slides); the script appends the inlined player. Rebuilding from the output file works too, because the script cuts at the ZONE 3 banner and keeps everything before it.
 
-Styling the chrome: override any token in your deck CSS, for example `:root{--pk-accent:#E63946;--pk-display:"Inter",sans-serif}`. Tokens: `--pk-bg`, `--pk-fg`, `--pk-fg-mute`, `--pk-line`, `--pk-info` (dark chrome); `--pk-paper`, `--pk-ink`, `--pk-mute`, `--pk-rule` (index and notes card); `--pk-accent`, `--pk-accent-ink`, `--pk-accent-tint`; `--pk-mono`, `--pk-display`, `--pk-body`.
+Link mode: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@1/player.css">` and `<script src="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@1/player.js"></script>` after `#viewport`. `@1` resolves to the newest 1.x release tag, so a linked deck picks up fixes and never a contract change. A full tag (`@1.1.0`) freezes it. Avoid `@main`: the CDN caches a branch for hours, so it is neither current nor stable. A linked deck needs a connection when it opens and shows nothing from the player until the files arrive.
+
+The player is copied, never retyped. An assistant that cannot download files should use link mode.
+
+Styling the chrome: override any token in your deck CSS, for example `:root{--pk-accent:#E63946;--pk-display:"Inter",sans-serif}`. The player's defaults carry no specificity, so a deck's `:root` block wins wherever it sits in the file. Tokens: `--pk-bg`, `--pk-fg`, `--pk-fg-mute`, `--pk-line`, `--pk-info` (dark chrome); `--pk-paper`, `--pk-ink`, `--pk-mute`, `--pk-rule` (index and notes card); `--pk-accent`, `--pk-accent-ink`, `--pk-accent-tint`; `--pk-mono`, `--pk-display`, `--pk-body`.
 
 ## 3. Using it
 
 Open the file. Slide 0 is an index of real thumbnails. Arrows, space, Enter, PageDown advance; the deck loops from the last slide back to the index. `#/12` in the URL opens slide 12.
 
-Presenter setup for a screen-shared session: open the deck twice on one machine. Share the first window (press F for fullscreen). Open the second with `?presenter` on the URL; it shows the notes panel, ribbon and tools. The two windows stay in step over a browser channel (slide, hold screen, clock, ink, cursor, selection). A window opened later asks the presenter window for the current state.
+Presenter setup for a screen-shared session: open the deck twice on one machine. Share the first window (press F for fullscreen). Open the second by clicking the faint screen icon in the bottom right corner of the deck, or by adding `?presenter` to the URL; it shows the notes panel, ribbon and tools. The icon opens the second window on the slide you are on. If the browser refuses a new window (a blocked popup, a sandboxed preview pane) the panel opens in the same window instead, which is also what N does. The icon is dim because it sits on the shared window, a little brighter on the index, and absent in the presenter view. A deck that does not want it sets `#pk-present{display:none}`.
+
+The presenter view opens on the index like any other window. The drawing tools act on slides and do nothing on the index, where they are dimmed; a tool picked there is ready on the first slide, and the thumbnails stay clickable. The two windows stay in step over a browser channel (slide, hold screen, clock, ink, cursor, selection). A window opened later asks the presenter window for the current state.
 
 Keys:
 
@@ -108,16 +117,22 @@ Toolbar: pointer, pen, highlighter, laser, oval, magnifier (with a caret for its
 | No `data-brand` | Hold screen shows the title. |
 | No notes | Card reads "No notes." |
 | Fonts blocked or offline | Fallback faces; layout holds. |
+| Opened inside a sandboxed preview pane (a chat app's canvas, an `srcdoc` iframe) | The browser refuses to update the URL hash; the player carries on without it. Navigation, notes, clock and tools work. There is no second window, so nothing to sync with. |
+| Deck has no `box-sizing` reset, or a global one | The chrome sets its own; layout is the same either way. |
+| Deck uses a high `z-index` inside a slide | Stays inside the slide; ink, magnifier and hold screen remain on top. |
+| Link mode and no connection | The page renders as plain HTML, all slides stacked, until the player files load. |
 | `BroadcastChannel` unavailable | Slide and clock still sync via `localStorage` events; ink and cursor do not. |
 | `localStorage` blocked | Everything works in one window; the clock does not survive a reload. |
 | Second window never opened | Presenter view works alone; sync state says "solo". |
+| Browser refuses the new window from the corner icon | The presenter panel opens in the same window. |
+| Tool selected while on the index | Nothing draws and nothing is captured; thumbnails stay clickable; the tool is live on the next slide. |
 | Window loses focus | Instant scrolls are used for the ribbon so nothing is dropped. |
 | Different aspect ratio | Set `data-width` and `data-height`; thumbnails and ribbon follow. |
 | Reduced-motion preference | Panel and progress transitions are disabled. |
 
 ## 5. Testing without a mouse
 
-`window.__deck()` returns `{cur, tool, strokes, ellipses, mag, presenter, remoteHover, remoteSel}` for the current window, which is enough to drive the page with synthetic `PointerEvent`s from a console or an automation tool and confirm that ink, cursor and selection reached the other window. Note that some browser automation captures (clipped screenshots) can time out on a page with an active canvas even though the page is responsive; prefer full screenshots and `window.__deck()`.
+`window.__deck()` returns `{version, slides, cur, tool, strokes, ellipses, mag, presenter, remoteHover, remoteSel}` for the current window. `version` is the player release and `slides` the number of content slides; if `__deck` is undefined the player did not start. The rest is enough to drive the page with synthetic `PointerEvent`s from a console or an automation tool and confirm that ink, cursor and selection reached the other window. Note that some browser automation captures (clipped screenshots) can time out on a page with an active canvas even though the page is responsive; prefer full screenshots and `window.__deck()`.
 
 ## 6. Known limits
 

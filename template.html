@@ -9,6 +9,9 @@
      ZONE 1 · DECK STYLES
      Everything about how a slide looks. The player never touches this.
      Do not position or hide .slide here; the player owns placement.
+     Start every selector with .slide, as below. A bare h2, p, * or body
+     rule also restyles the player's index and presenter view.
+     Sizes are px on a 1920 × 1080 slide; the player scales the whole slide.
      Optional: override any --pk-* token to match the deck's palette.
      ============================================================ -->
 <style id="deck-css">
@@ -19,15 +22,15 @@
 }
 .slide{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;padding:120px 140px 110px}
 .slide.dark{background:#14130E;color:#EFEAE0}
-.eyebrow{font-family:"IBM Plex Mono",Menlo,monospace;font-size:19px;letter-spacing:.16em;text-transform:uppercase;color:#7A5A00;margin:0 0 26px}
-.dark .eyebrow{color:var(--accent)}
-h1{font-family:"Manrope",sans-serif;font-weight:800;font-size:112px;line-height:1;letter-spacing:-.03em;margin:0}
-h2{font-family:"Manrope",sans-serif;font-weight:800;font-size:76px;line-height:1.04;letter-spacing:-.025em;margin:0 0 42px;max-width:24ch}
-p,li{font-size:34px;line-height:1.38;margin:0}
-p+p{margin-top:22px}
-ul{margin:0;padding-left:1.2em}
-mark{background:var(--accent);color:var(--ink);padding:0 .14em}
-.foot{position:absolute;left:140px;right:140px;bottom:22px;display:flex;justify-content:space-between;font-family:"IBM Plex Mono",Menlo,monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.slide .eyebrow{font-family:"IBM Plex Mono",Menlo,monospace;font-size:19px;letter-spacing:.16em;text-transform:uppercase;color:#7A5A00;margin:0 0 26px}
+.slide.dark .eyebrow{color:var(--accent)}
+.slide h1{font-family:"Manrope",sans-serif;font-weight:800;font-size:112px;line-height:1;letter-spacing:-.03em;margin:0}
+.slide h2{font-family:"Manrope",sans-serif;font-weight:800;font-size:76px;line-height:1.04;letter-spacing:-.025em;margin:0 0 42px;max-width:24ch}
+.slide p,.slide li{font-size:34px;line-height:1.38;margin:0}
+.slide p+p{margin-top:22px}
+.slide ul{margin:0;padding-left:1.2em}
+.slide mark{background:var(--accent);color:var(--ink);padding:0 .14em}
+.slide .foot{position:absolute;left:140px;right:140px;bottom:22px;display:flex;justify-content:space-between;font-family:"IBM Plex Mono",Menlo,monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 </style>
 
 <!-- ============================================================
@@ -95,9 +98,10 @@ mark{background:var(--accent);color:var(--ink);padding:0 .14em}
      Single-file form (preferred for sharing): paste player.css into
      <style id="player-css"> and player.js into <script id="player-js">
      here, unchanged, or run: python build.py template.html my-deck.html
-     Link mode from the CDN, no local files:
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/player.css">
-       <script src="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/player.js"></script>
+     Never retype the player. Copy the files with a tool, or link them.
+     Link mode from the CDN, no local files (needs a connection when the deck opens):
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@1/player.css">
+       <script src="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@1/player.js"></script>
      ============================================================ -->
 <link rel="stylesheet" href="player.css">
 <script src="player.js"></script>

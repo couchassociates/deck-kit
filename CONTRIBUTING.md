@@ -12,6 +12,7 @@ Read [docs/DIRECTION.md](docs/DIRECTION.md). Changes that conflict with its prin
 - Do not change the contract in `PLAYER.md` casually. Adding an attribute or an element is a versioned change; open an issue first.
 - Test with the template: open `template.html`, open it again with `?presenter`, and check the index, notes, clock, ribbon, hold screen (B), tools and sync between the two windows. `window.__deck()` in the console reports the current state of a window.
 - Keep `PLAYER.md` in step with the code. A feature that is not documented there does not exist for an assistant.
+- Keep sample content invented and generic. An example deck uses a made-up subject with no real people, organisations or figures, and nothing from a deck you built for real work.
 - Update the degradation table when you add anything that reads from the page.
 
 ## Growing a branch

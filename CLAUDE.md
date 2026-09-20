@@ -10,10 +10,13 @@ Rules:
 - The player reads only what `PLAYER.md` describes. Adding to the contract is a versioned decision; open an issue and update `PLAYER.md` in the same change.
 - The player never styles the inside of a slide. It owns placement and chrome; the deck owns appearance.
 - Everything must degrade gracefully when an attribute, notes, fonts, sync or storage are missing. Update the degradation table in `PLAYER.md` when you add anything that reads from the page.
-- Test in a browser with two windows (one plain, one `?presenter`), served over http. `window.__deck()` and synthetic `PointerEvent`s let you verify sync without a mouse. Run `node --check player.js` after edits.
+- Test in a browser with two windows (one plain, one `?presenter`), served over http, then again from `file://` and inside a sandboxed `srcdoc` iframe, which is where an assistant's output is often first seen. `window.__deck()` and synthetic `PointerEvent`s let you verify sync without a mouse. Run `node --check player.js` after edits.
 - Keep `template.html` a conformance example: it must show a slide with everything, one with no timing, one with no notes, and one with no attributes at all.
+- The minimal deck in the README must stay a working deck. Paste it into a file and open it whenever the contract or the link URLs change.
 - Keep the README's agent instructions true. If you change what an agent must fetch or do, change the README and `AGENTS.md` in the same commit, and re-run a vague-prompt test with at least one assistant.
 - Branches: one lowercase word per deck type; `lab/` or a handle for experiments; cut from a tagged `main`; state in the branch README what changed and from which tag.
+- Sample content is invented and generic. The template describes the kit itself; decks in `examples/` use made-up subjects with no real people, organisations, places or figures, and each has a look of its own so it is clear that styling is free. Never carry a topic, wording, a name or a number from a real deck into this repository, and that includes tests, docs and commit messages.
+- Decks in `examples/` link `../player.css` and `../player.js` so they always run the current player. Open each one after a player change.
 - Copy in prose: no em dashes, no filler phrases, no restating headings. Write for the model that lands on the page and the person who skims it.
 
 Maintainer facts: the repository belongs to the `couchassociates` organisation. A separate `couch-associates` user account exists and redirects here; do not create anything under it. Releases are tags on `main` (`v1.0.0` is the first).

@@ -1,0 +1,142 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Community garden: spring update</title>
+<!-- An example deck for deck-kit. The garden, the figures and the events are invented.
+     No web fonts and no external images, so it looks the same offline. -->
+
+<!-- ============================================================
+     ZONE 1 · DECK STYLES
+     Every selector starts with .slide so nothing reaches the player's index or presenter view.
+     ============================================================ -->
+<style id="deck-css">
+:root{
+  --leaf:#1F3D2B; --leaf-2:#2F5A40; --cream:#F6F1E4; --soil:#1C1B17; --stone:#6B6A5F; --clay:#C8553D;
+  /* the presenter view picks up the deck's palette */
+  --pk-paper:var(--cream); --pk-ink:var(--soil); --pk-mute:var(--stone); --pk-rule:#DDD5C0;
+  --pk-accent:var(--clay); --pk-accent-ink:#7A2E1F; --pk-accent-tint:#F7DDD5;
+  --pk-display:Georgia,"Times New Roman",serif; --pk-body:system-ui,"Helvetica Neue",Arial,sans-serif;
+}
+.slide{background:var(--cream);color:var(--soil);font-family:system-ui,"Helvetica Neue",Arial,sans-serif;padding:110px 140px 120px}
+.slide.cover{background:var(--leaf);color:var(--cream)}
+.slide .kicker{font-size:22px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin:0 0 28px}
+.slide.cover .kicker{color:#E9B8A9}
+.slide h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:132px;line-height:1;letter-spacing:-.02em;margin:0 0 44px}
+.slide h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:80px;line-height:1.05;letter-spacing:-.015em;margin:0 0 56px;max-width:22ch}
+.slide p,.slide li{font-size:34px;line-height:1.4;margin:0}
+.slide .lede{font-size:40px;line-height:1.35;max-width:30ch}
+.slide .stats{display:flex;gap:40px}
+.slide .stat{flex:1;border-top:6px solid var(--leaf);padding-top:26px}
+.slide .stat b{display:block;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:128px;line-height:1;color:var(--leaf)}
+.slide .stat span{display:block;font-size:30px;line-height:1.3;color:var(--stone);margin-top:14px;max-width:16ch}
+.slide .changes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:34px 80px}
+.slide .changes li{border-left:6px solid var(--clay);padding-left:28px}
+.slide .changes b{display:block;font-size:36px;margin-bottom:6px}
+.slide .changes span{font-size:30px;color:var(--stone)}
+.slide .chart{display:block;width:100%;height:520px}
+.slide .chart text{font-family:system-ui,"Helvetica Neue",Arial,sans-serif;font-size:28px;fill:var(--stone)}
+.slide .chart .val{fill:var(--soil);font-size:30px;font-weight:600}
+.slide .asks{display:flex;gap:56px}
+.slide .ask{flex:1;background:#fff;border-radius:18px;padding:40px 44px;box-shadow:0 10px 30px rgba(31,61,43,.10)}
+.slide .ask b{display:block;font-size:40px;margin-bottom:12px;color:var(--leaf)}
+.slide .ask span{font-size:30px;line-height:1.4;color:var(--stone)}
+.slide .foot{position:absolute;left:140px;right:140px;bottom:44px;display:flex;justify-content:space-between;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.slide.cover .foot{color:#A9C2B1}
+</style>
+
+<!-- ============================================================
+     ZONE 2 · DECK CONTENT
+     ============================================================ -->
+<div id="viewport">
+<div id="stage" data-brand="Community <i>garden</i>" data-version="members' meeting" data-duration="10">
+
+<section class="slide cover" data-title="Spring update" data-start="0" data-end="1">
+  <p class="kicker">Members' meeting · spring</p>
+  <h1>Where the garden stands, and what changes this season</h1>
+  <p class="lede">Ten minutes, five slides, two decisions at the end.</p>
+  <div class="foot"><span>Community garden</span><span>01</span></div>
+  <aside class="notes">
+    <div class="open"><b>Open · Presenter</b>"Thanks for coming out. I have ten minutes of update and then two things I need you to decide."</div>
+    <p>Hold this slide while people find a seat. Say up front that the decisions are at the end so nobody saves their questions for the wrong moment.</p>
+    <div class="next"><b>Into 02 · Presenter</b>"Start with the numbers, because they are better than last year."</div>
+  </aside>
+</section>
+
+<section class="slide" data-title="Where we stand" data-start="1" data-end="3">
+  <p class="kicker">Where we stand</p>
+  <h2>Nearly full, and the waiting list is growing</h2>
+  <div class="stats">
+    <div class="stat"><b>42</b><span>of 48 plots planted by the first week of May</span></div>
+    <div class="stat"><b>17</b><span>households on the waiting list, up from 9</span></div>
+    <div class="stat"><b>310</b><span>volunteer hours logged since the autumn</span></div>
+  </div>
+  <div class="foot"><span>Community garden · spring update</span><span>02</span></div>
+  <aside class="notes">
+    <div class="open"><b>Open · Presenter</b>"Three numbers tell most of the story, and the middle one is the reason for tonight's first decision."</div>
+    <p>The six unplanted plots are all assigned; their holders start late every year. The waiting list nearly doubled after the open day.</p>
+    <div class="cue"><b>If asked</b>Volunteer hours come from the sign-in sheet in the shed, so the real figure is higher.</div>
+    <div class="next"><b>Into 03 · Presenter</b>"Those hours went somewhere. Here is what they built."</div>
+  </aside>
+</section>
+
+<section class="slide" data-title="What changed" data-start="3" data-end="5.5">
+  <p class="kicker">Since the autumn</p>
+  <h2>Four things are different when you walk in</h2>
+  <ul class="changes">
+    <li><b>A second water line</b><span>The far beds no longer need a hose run from the gate.</span></li>
+    <li><b>Compost bays rebuilt</b><span>Three bays in rotation, with a sign saying which one is open.</span></li>
+    <li><b>A code on the shed</b><span>The padlock and its four lost keys are gone.</span></li>
+    <li><b>Work parties move to mornings</b><span>First Saturday of the month, nine until noon.</span></li>
+  </ul>
+  <div class="foot"><span>Community garden · spring update</span><span>03</span></div>
+  <aside class="notes">
+    <div class="open"><b>Open · Presenter</b>"If you have not been down since October, four things will look different."</div>
+    <p>Take them in the order people meet them walking in from the gate. The shed code goes out by message after the meeting, not on a slide.</p>
+    <div class="next"><b>Into 04 · Presenter</b>"The other thing that changed is how much we gave away."</div>
+  </aside>
+</section>
+
+<section class="slide" data-title="Harvest shared" data-start="5.5" data-end="7.5">
+  <p class="kicker">Last season</p>
+  <h2>Produce given to the food bank, by month</h2>
+  <svg class="chart" viewBox="0 0 1640 520" role="img" aria-label="Bar chart of kilograms donated from June to October">
+    <line x1="0" y1="440" x2="1640" y2="440" stroke="#DDD5C0" stroke-width="3"/>
+    <rect x="80"   y="356" width="200" height="84"  fill="#2F5A40"/><text class="val" x="180"  y="340" text-anchor="middle">21 kg</text><text x="180"  y="490" text-anchor="middle">June</text>
+    <rect x="400"  y="248" width="200" height="192" fill="#2F5A40"/><text class="val" x="500"  y="232" text-anchor="middle">48 kg</text><text x="500"  y="490" text-anchor="middle">July</text>
+    <rect x="720"  y="92"  width="200" height="348" fill="#C8553D"/><text class="val" x="820"  y="76"  text-anchor="middle">87 kg</text><text x="820"  y="490" text-anchor="middle">August</text>
+    <rect x="1040" y="184" width="200" height="256" fill="#2F5A40"/><text class="val" x="1140" y="168" text-anchor="middle">64 kg</text><text x="1140" y="490" text-anchor="middle">September</text>
+    <rect x="1360" y="320" width="200" height="120" fill="#2F5A40"/><text class="val" x="1460" y="304" text-anchor="middle">30 kg</text><text x="1460" y="490" text-anchor="middle">October</text>
+  </svg>
+  <div class="foot"><span>Community garden · spring update</span><span>04</span></div>
+  <aside class="notes">
+    <div class="open"><b>Open · Presenter</b>"Two hundred and fifty kilograms left the garden in crates last year, and August carried a third of it."</div>
+    <p>The chart is drawn in the file as SVG, so it needs no connection and stays sharp under the magnifier. Try the magnifier on the August bar.</p>
+    <div class="next"><b>Into 05 · Presenter</b>"To do that again with a longer waiting list, I need two things from you tonight."</div>
+  </aside>
+</section>
+
+<section class="slide" data-title="Two decisions" data-start="7.5" data-end="10">
+  <p class="kicker">What we need from you</p>
+  <h2>Two decisions before we leave</h2>
+  <div class="asks">
+    <div class="ask"><b>Split the six largest plots</b><span>Twelve half plots would clear most of the waiting list by June. Current holders keep first choice of half.</span></div>
+    <div class="ask"><b>A shared bed for the food bank</b><span>One bed by the gate, planted and picked at the monthly work party, so giving does not depend on surplus.</span></div>
+  </div>
+  <div class="foot"><span>Community garden · spring update</span><span>05</span></div>
+  <aside class="notes">
+    <div class="open"><b>Open · Presenter</b>"Both of these are small, and both need a show of hands."</div>
+    <p>Take the plot split first; it is the one people have feelings about. If the room is divided, offer a one-season trial.</p>
+    <div class="next"><b>Close · Presenter</b>"Thank you. The kettle is on, and the sign-up sheet for the first work party is by the door."</div>
+  </aside>
+</section>
+
+</div>
+</div>
+
+<!-- ============================================================
+     ZONE 3 · PLAYER
+     Linked from the folder above so this example always runs the current player.
+     For a copy that stands alone: python build.py examples/garden-update.html garden-update-deck.html
+     ============================================================ -->
+<link rel="stylesheet" href="../player.css">
+<script src="../player.js"></script>

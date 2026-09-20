@@ -5,12 +5,12 @@ A foundation for slide decks that your AI assistant builds for you: one HTML fil
 You do not install anything. You point your assistant at this repository and ask for a deck.
 
 ```
-Build me a deck about <your topic>. Use https://github.com/couch-associates/deck-kit as the foundation.
+Build me a deck about <your topic>. Use https://github.com/couchassociates/deck-kit as the foundation.
 ```
 
 The assistant reads this page, takes the two files it needs, writes your slides, and hands you a single file that opens in any browser. Open it once to present. Add `?presenter` to the address in a second window to get notes, the clock and the tools.
 
-- Live example: [template.html](https://cdn.jsdelivr.net/gh/couch-associates/deck-kit@main/template.html) (add `?presenter` for the presenter view)
+- Live example: [template.html](https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/template.html) (add `?presenter` for the presenter view)
 - The standard every deck follows: [PLAYER.md](PLAYER.md)
 - Where this is going and how to keep branches aligned: [docs/DIRECTION.md](docs/DIRECTION.md)
 - Contributing and branch conventions: [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -33,9 +33,9 @@ Everything degrades gracefully. A slide without a title is "Slide 7". A slide wi
 
 You are here because a person asked you to build a slide deck and named this repository. Do the following, in order.
 
-1. **Read the standard.** Fetch and read [PLAYER.md](https://raw.githubusercontent.com/couch-associates/deck-kit/main/PLAYER.md). It defines the only markup the player reads: a `#viewport` containing a `#stage`, with one `<section class="slide">` per slide, each with optional `data-title`, `data-start`, `data-end` and an `<aside class="notes">`.
-2. **Start from the template.** Fetch [template.html](https://raw.githubusercontent.com/couch-associates/deck-kit/main/template.html). Keep its three zones: deck styles, deck content, player. Replace the sample slides with the person's content. Write deck styles freely; never position, size or hide `.slide` yourself.
-3. **Take the player files verbatim.** Fetch [player.css](https://raw.githubusercontent.com/couch-associates/deck-kit/main/player.css) and [player.js](https://raw.githubusercontent.com/couch-associates/deck-kit/main/player.js) and inline them unchanged into a `<style id="player-css">` and a `<script id="player-js">` at the end of the file, after `#viewport`. Do not edit, shorten, reformat or "improve" them. If you cannot inline them, use link mode instead: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/couch-associates/deck-kit@main/player.css">` and `<script src="https://cdn.jsdelivr.net/gh/couch-associates/deck-kit@main/player.js"></script>`. Prefer inline; it makes the file self-contained and works offline.
+1. **Read the standard.** Fetch and read [PLAYER.md](https://raw.githubusercontent.com/couchassociates/deck-kit/main/PLAYER.md). It defines the only markup the player reads: a `#viewport` containing a `#stage`, with one `<section class="slide">` per slide, each with optional `data-title`, `data-start`, `data-end` and an `<aside class="notes">`.
+2. **Start from the template.** Fetch [template.html](https://raw.githubusercontent.com/couchassociates/deck-kit/main/template.html). Keep its three zones: deck styles, deck content, player. Replace the sample slides with the person's content. Write deck styles freely; never position, size or hide `.slide` yourself.
+3. **Take the player files verbatim.** Fetch [player.css](https://raw.githubusercontent.com/couchassociates/deck-kit/main/player.css) and [player.js](https://raw.githubusercontent.com/couchassociates/deck-kit/main/player.js) and inline them unchanged into a `<style id="player-css">` and a `<script id="player-js">` at the end of the file, after `#viewport`. Do not edit, shorten, reformat or "improve" them. If you cannot inline them, use link mode instead: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/player.css">` and `<script src="https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/player.js"></script>`. Prefer inline; it makes the file self-contained and works offline.
 4. **Write the notes in the standard shape.** For every slide: an `<div class="open">` with who speaks and the first sentence to say as the slide lands (a bridge from the previous slide, never the slide's title read aloud), the body, then a `<div class="next">` with the line that carries into the next slide.
 5. **Add timing if the person gave a duration.** Set `data-duration` on `#stage` in minutes and `data-start`/`data-end` on each slide. If they gave none, leave timing out; the clock still works.
 6. **Check your output before handing it over.** The file opens standalone from disk. `#stage` exists and contains only `section.slide` elements. Each slide has a `data-title`. The two player files are present and unmodified. The `<title>` is the deck's name. Nothing from the template's sample content remains.

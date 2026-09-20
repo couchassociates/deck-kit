@@ -55,7 +55,7 @@ Rules the deck must respect:
 - Start every deck selector with `.slide` (`.slide h2`, `.slide.dark .card`). The index is a slide the player generates, and the presenter view lives in the same page, so a bare `h2`, `p`, `*` or `body` rule reaches them. The player defends its own layout (it sets `box-sizing` on its chrome and spells out the index heading), but it cannot anticipate every deck rule.
 - Each slide is its own stacking context. A `z-index` inside a slide orders things within that slide and never rises above the ink, the magnifier or the hold screen.
 - Keep images inside the file (CSS, inline SVG, data URI). A hotlinked image may be blocked, moved or offline when the deck is presented.
-- Do not use the ids `viewport`, `stage`, `progress`, `hud`, `ribbonwrap`, `ribbon`, `tools`, `notes`, `hold`, `ink`, `fx`, `lens`, `bottom`, `clock`, `keys`, `pk-present` for anything else.
+- Do not use the ids `viewport`, `stage`, `progress`, `hud`, `ribbonwrap`, `ribbon`, `tools`, `notes`, `hold`, `ink`, `fx`, `lens`, `bottom`, `clock`, `keys`, or any id that starts with `pk-` (`pk-corner`, `pk-present`, `pk-helpbtn`, `pk-help`) for anything else.
 - Slides are cloned for thumbnails and the magnifier. Avoid ids inside slides (they would be duplicated) and avoid scripts inside slides.
 - A slide's `aside.notes` is never displayed on the slide itself.
 
@@ -75,9 +75,16 @@ Styling the chrome: override any token in your deck CSS, for example `:root{--pk
 
 Open the file. Slide 0 is an index of real thumbnails. Arrows, space, Enter, PageDown advance; the deck loops from the last slide back to the index. `#/12` in the URL opens slide 12.
 
-Presenter setup for a screen-shared session: open the deck twice on one machine. Share the first window (press F for fullscreen). Open the second by clicking the faint screen icon in the bottom right corner of the deck, or by adding `?presenter` to the URL; it shows the notes panel, ribbon and tools. The icon opens the second window on the slide you are on. If the browser refuses a new window (a blocked popup, a sandboxed preview pane) the panel opens in the same window instead, which is also what N does. The icon is dim because it sits on the shared window, a little brighter on the index, and absent in the presenter view. A deck that does not want it sets `#pk-present{display:none}`.
+Two buttons sit in the bottom right corner of a plain window. They are labelled and plain to see on the index, where a person starts, and dim to icons on slides because an audience may be watching that window.
 
-The presenter view opens on the index like any other window. The drawing tools act on slides and do nothing on the index, where they are dimmed; a tool picked there is ready on the first slide, and the thumbnails stay clickable. The two windows stay in step over a browser channel (slide, hold screen, clock, ink, cursor, selection). A window opened later asks the presenter window for the current state.
+- **Presenter view** switches this window to the presenter view: notes, clock, next-slide preview, ribbon and drawing tools. In the presenter view the same button sits at the end of the toolbar and reads "Exit presenter". N does the same, and `?presenter` on the URL opens a window already in that view.
+- **How to present** (or the ? key) opens the built-in help: the two-window setup in three steps, the keys for reading alone, and the keys for presenting.
+
+Presenting to other people takes two windows of the same browser on one machine. Open the presenter view, then click "Open a window to share" beside the sync state. A second, plain window opens on the same slide. Share that window in the meeting, or drag it to the projector and press F. The two stay in step over a browser channel (slide, hold screen, clock, ink, cursor, selection); the sync state reads "in step" and the share button goes away until that window closes. A window that a presenter view is driving keeps its corner buttons dim and unlabelled even on the index. Two different browsers (Chrome beside Edge) do not share a channel and will not sync.
+
+A deck that does not want the corner buttons sets `#pk-corner{display:none}`; N, ? and `?presenter` still work.
+
+The presenter view opens on the index like any other window. The drawing tools act on slides and do nothing on the index, where they are dimmed; a tool picked there is ready on the first slide, and the thumbnails stay clickable.
 
 Keys:
 
@@ -85,6 +92,7 @@ Keys:
 |---|---|
 | → · space · Enter · click | Next (a click that moved more than a few pixels, or made a text selection, does not advance) |
 | ← · Backspace | Previous |
+| ? | Help: how to present, the two-window setup, the keys. Esc or ? closes it. |
 | G | Index |
 | Esc | Drop the active tool; if none, go to the index |
 | N | Toggle the presenter panel |
@@ -124,7 +132,8 @@ Toolbar: pointer, pen, highlighter, laser, oval, magnifier (with a caret for its
 | `BroadcastChannel` unavailable | Slide and clock still sync via `localStorage` events; ink and cursor do not. |
 | `localStorage` blocked | Everything works in one window; the clock does not survive a reload. |
 | Second window never opened | Presenter view works alone; sync state says "solo". |
-| Browser refuses the new window from the corner icon | The presenter panel opens in the same window. |
+| Browser refuses the second window (popup blocked, sandboxed preview pane) | The share button says so and asks the person to open the file again in a second window. The presenter view itself is unaffected; it never needs a new window. |
+| The shared window is closed | It says goodbye on the way out; the presenter view goes back to "solo" and offers the share button again. |
 | Tool selected while on the index | Nothing draws and nothing is captured; thumbnails stay clickable; the tool is live on the next slide. |
 | Window loses focus | Instant scrolls are used for the ribbon so nothing is dropped. |
 | Different aspect ratio | Set `data-width` and `data-height`; thumbnails and ribbon follow. |

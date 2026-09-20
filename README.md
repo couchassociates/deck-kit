@@ -8,7 +8,7 @@ You do not install anything. You point your assistant at this repository and ask
 Build me a deck about <your topic>. Use https://github.com/couchassociates/deck-kit as the foundation.
 ```
 
-The assistant reads this page, takes the two files it needs, writes your slides, and hands you a single file that opens in any browser. Open it once to present. Click the faint screen icon in the bottom right corner (or add `?presenter` to the address in a second window) to get notes, the clock and the tools.
+The assistant reads this page, takes the two files it needs, writes your slides, and hands you a single file that opens in any browser. Open it and you are on the index, with two buttons in the bottom right corner. **Presenter view** turns the window into your console (notes, clock, next slide, drawing tools) and the same button takes you back. **How to present** explains the two-window setup for a meeting or a projector.
 
 - Live example: [template.html](https://cdn.jsdelivr.net/gh/couchassociates/deck-kit@main/template.html) (add `?presenter` for the presenter view)
 - A finished example with its own look: [examples/garden-update.html](examples/garden-update.html) (an invented community garden; five slides, a chart drawn in SVG, notes and timing)
@@ -23,7 +23,8 @@ The assistant reads this page, takes the two files it needs, writes your slides,
 |---|---|
 | Index | Slide 0 is a grid of real thumbnails. Click any to jump. The deck loops. |
 | Presenter view | Notes for the slide on screen, a next-slide preview, a scrolling ribbon of every slide, a session clock that says whether you are ahead, on time or behind. |
-| Two windows, one machine | Click the corner icon and the presenter view opens in a second window on the same slide. Share the first window; keep the second for yourself. Slide, clock, hold screen, ink, cursor and text selection stay in step. |
+| Two windows, one machine | In the presenter view, click "Open a window to share". A clean second window opens on the same slide; share that one and run the talk from the first. Both windows must be in the same browser. Slide, clock, hold screen, ink, cursor and text selection stay in step. |
+| Built-in help | Press ? or click "How to present". The deck explains its own presenter view, the two-window setup and the keys, so nobody needs this page to use a deck. |
 | Hold screen | Press B to drop the shared view to a quiet brand screen while you talk. |
 | Tools | Pen, highlighter, laser, oval, magnifier, ten colours, four widths, mirrored to the shared window. Nothing is mirrored until you pick a tool. |
 | Notes shape | Each slide's notes open with the line to say as the slide lands, and close with the line that carries you into the next slide. |
@@ -47,7 +48,7 @@ You are here because a person asked you to build a slide deck and named this rep
 4. **Write the notes in the standard shape.** For every slide: an `<div class="open">` with who speaks and the first sentence to say as the slide lands (a bridge from the previous slide, never the slide's title read aloud), the body, then a `<div class="next">` with the line that carries into the next slide.
 5. **Add timing if the person gave a duration.** Set `data-duration` on `#stage` in minutes and `data-start`/`data-end` on each slide. If they gave none, leave timing out; the clock still works.
 6. **Check your output before handing it over.** The file opens standalone from disk. `#stage` exists and contains only `section.slide` elements. Each slide has a `data-title`. The player is present exactly once, inlined unmodified or linked, after `#viewport`. Every deck selector starts with `.slide`. No slide contains an `id` or a `<script>`. The `<title>` is the deck's name. Nothing from the template's sample content remains. If you can open a browser, load the file and run `window.__deck()` in the console: it returns the player `version` and the `slides` count, and if it is undefined the player did not start.
-7. **Tell the person how to use it.** Open the downloaded file in a normal browser tab to present. Click the faint screen icon in the bottom right corner for the presenter view in a second window (notes, clock, tools), or add `?presenter` to the address; share the plain window. The presenter view opens on the index, and the drawing tools start working on the first slide. The key list is at the bottom of the presenter panel. A preview pane inside a chat app can show the slides, but the second window and the sync between them need the file opened in the browser itself. If you used link mode, say the deck needs a connection when it opens.
+7. **Tell the person how to use it.** Open the downloaded file in a normal browser tab. The index has two buttons in the bottom right corner: "Presenter view" switches the window to notes, clock and tools, and back again; "How to present" (or the ? key) opens the deck's own guide. To present to other people, open the presenter view, click "Open a window to share", and share that second window; it follows the first. Both windows must be in the same browser on the same computer. The drawing tools start working on the first slide. A preview pane inside a chat app can show the slides, but the second window and the sync between them need the file opened in the browser itself. If you used link mode, say the deck needs a connection when it opens.
 
 ### A complete minimal deck
 

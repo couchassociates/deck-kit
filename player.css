@@ -1,5 +1,5 @@
 /* ============================================================
-   DECK PLAYER · player.css · v1.1.0
+   DECK PLAYER · player.css · v1.2.0
    Viewer, presenter view, window sync, clock, ribbon, ink tools.
    Self-contained: every colour and face below has a default. A deck may
    override any --pk-* token in its own CSS. No slide styling lives here.
@@ -19,7 +19,7 @@ html,body{height:100%}
 body{margin:0;background:var(--pk-bg);overflow:hidden}
 /* the chrome is laid out for border-box and must not depend on the deck supplying a reset.
    Listed element by element so the inside of a cloned slide keeps whatever the deck chose. */
-#progress,#hud,#hud *,#pk-present,#tools,#tools *,#ribbonwrap,#ribCtl,#ribCtl *,.rarrow,#ribbon,.rthumb,.rthumb>*,#notes,#nowcard,#nowcard .head,#nowcard .head *,#notesBody,#bottom,#clock,#clock *,#nextwrap,#nextwrap>*,#sync,#keys,#keys *,#hold,#hold *,#lens,.slide.grid,.gridhead,.gridhead *,.thumbs,.thumb,.thumb>*{box-sizing:border-box}
+#progress,#hud,#hud *,#pk-corner,#pk-corner *,#pk-help,#pk-help *,#tools,#tools *,#ribbonwrap,#ribCtl,#ribCtl *,.rarrow,#ribbon,.rthumb,.rthumb>*,#notes,#nowcard,#nowcard .head,#nowcard .head *,#notesBody,#bottom,#clock,#clock *,#nextwrap,#nextwrap>*,#sync,#keys,#keys *,#hold,#hold *,#lens,.slide.grid,.gridhead,.gridhead *,.thumbs,.thumb,.thumb>*{box-sizing:border-box}
 /* structural slide rules: the deck styles the inside of a slide, the player places it.
    isolation keeps a z-index inside a slide from climbing over the ink, the lens or the hold screen. */
 section.slide{width:var(--pk-w);height:var(--pk-h);box-sizing:border-box;overflow:hidden;isolation:isolate}
@@ -35,7 +35,7 @@ body.notes-open #stage{box-shadow:0 0 0 2px rgba(255,255,255,.14),0 24px 60px rg
 /* the index heading spells out what a deck's bare h2 rule would otherwise leak into it */
 .slide.grid .gridhead h2{font-family:var(--pk-display);font-weight:800;font-size:52px;line-height:1.05;margin:0;padding:0;max-width:none;letter-spacing:-.02em;text-transform:none;text-align:left;color:var(--pk-ink)}
 .slide.grid .gridhead .mute{color:var(--pk-mute);letter-spacing:0;text-transform:none}
-.slide.grid .gridhead .hint{font-family:var(--pk-mono);font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--pk-mute)}
+.slide.grid .gridhead .hint{font-family:var(--pk-mono);font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--pk-mute);white-space:nowrap;flex:none;margin-left:40px}
 .thumbs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:22px 22px}
 .thumb{cursor:pointer;display:block;min-width:0;background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit}
 .thumb .frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--pk-rule);background:var(--pk-paper);box-shadow:0 1px 0 rgba(0,0,0,.05)}
@@ -60,18 +60,48 @@ body.notes-open #stage{box-shadow:0 0 0 2px rgba(255,255,255,.14),0 24px 60px rg
 #lens .slide{display:block;position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
 /* viewport chrome (not scaled) */
 #progress{position:fixed;left:0;bottom:0;height:4px;background:var(--pk-accent);width:0;transition:width .25s ease;z-index:5}
-/* corner button: the way into the presenter view for someone who has not been told about ?presenter or N.
-   Faint until hovered because it sits on the shared window. A deck that does not want it: #pk-present{display:none} */
-#pk-present{position:fixed;right:16px;bottom:14px;z-index:6;width:38px;height:38px;display:grid;place-items:center;margin:0;padding:0;border:1px solid var(--pk-line);border-radius:6px;background:rgba(20,19,14,.85);color:var(--pk-fg);opacity:.3;cursor:pointer;transition:opacity .2s}
-#pk-present:hover,#pk-present:focus-visible{opacity:1;border-color:var(--pk-accent);outline:none}
-#pk-present svg{display:block}
-body.pk-index #pk-present{opacity:.6}
-body.notes-open #pk-present{display:none}
+/* corner buttons: help, and the way in and out of the presenter view, for someone who has not been told about N or ?presenter.
+   Faint until hovered because they sit on the window an audience may be watching. A deck that does not want them: #pk-corner{display:none} */
+#pk-corner{position:fixed;right:16px;bottom:14px;z-index:6;display:flex;gap:8px;align-items:center}
+#pk-present,#pk-helpbtn{height:38px;min-width:38px;display:flex;align-items:center;justify-content:center;gap:8px;margin:0;padding:0 9px;border:1px solid var(--pk-line);border-radius:6px;background:rgba(20,19,14,.85);color:var(--pk-fg);font-family:var(--pk-mono);font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;line-height:1;white-space:nowrap;opacity:.4;cursor:pointer;transition:opacity .2s}
+#pk-present:hover,#pk-present:focus-visible,#pk-helpbtn:hover,#pk-helpbtn:focus-visible{opacity:1;border-color:var(--pk-accent);outline:none}
+#pk-present svg{display:block;flex:none}
+#pk-helpbtn b{font-weight:500;font-size:16px;letter-spacing:0}
+#pk-present .lbl,#pk-helpbtn .lbl{display:none}
+#pk-present:hover .lbl,#pk-present:focus-visible .lbl,#pk-helpbtn:hover .lbl,#pk-helpbtn:focus-visible .lbl{display:inline}
+/* on the index, where a person starts, both buttons are plain to see and say what they do.
+   A plain window that a presenter window is driving (pk-following) is the one on show, so it stays quiet. */
+body.pk-index:not(.pk-following) #pk-corner button{opacity:.95}
+body.pk-index:not(.pk-following) #pk-corner .lbl{display:inline}
+/* in the presenter view the same two buttons sit at the end of the toolbar, and the presenter button reads "Exit presenter" */
+#tools #pk-helpbtn,#tools #pk-present{position:static;height:auto;min-width:0;opacity:1;padding:6px 10px;font-size:10px;letter-spacing:.08em;background:transparent;color:var(--pk-fg);flex:none}
+#tools #pk-helpbtn{margin-left:auto;border-color:var(--pk-line)}
+#tools #pk-present{border-color:var(--pk-accent)}
+#tools #pk-present svg{width:18px;height:18px}
+#tools #pk-present .lbl{display:inline}
+#tools #pk-helpbtn .lbl,#tools.tight #pk-present .lbl{display:none}
+/* help panel. Built from div and span only, so a deck's bare h2, p or li rule has nothing to hold on to. */
+#pk-help{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(10,10,8,.72);font-family:var(--pk-body);font-size:16px;line-height:1.5;color:var(--pk-ink);text-align:left;letter-spacing:normal;text-transform:none}
+#pk-help.open{display:flex}
+#pk-help .card{width:min(780px,100%);max-height:100%;overflow:auto;background:var(--pk-paper);border-left:6px solid var(--pk-accent);padding:26px 32px 24px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+#pk-help .hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:12px;margin-bottom:6px;border-bottom:2px solid var(--pk-ink)}
+#pk-help .t{font-family:var(--pk-display);font-weight:700;font-size:26px;line-height:1.15}
+#pk-help .sec{font-family:var(--pk-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--pk-accent-ink);margin:18px 0 8px}
+#pk-help .step{display:flex;gap:12px;align-items:baseline;margin:0 0 8px}
+#pk-help .step i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--pk-ink);color:var(--pk-paper);font-family:var(--pk-mono);font-style:normal;font-size:12px;line-height:24px;text-align:center}
+#pk-help .txt{margin:8px 0 0;color:var(--pk-ink)}
+#pk-help b{font-weight:600}
+#pk-help kbd{font-family:var(--pk-mono);font-size:12px;border:1px solid var(--pk-rule);border-radius:3px;padding:0 6px;background:rgba(0,0,0,.04);white-space:nowrap}
+#pk-help .ft{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding-top:14px;border-top:1px solid var(--pk-rule);font-size:13px;color:var(--pk-mute)}
+#pk-help button{font-family:var(--pk-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;line-height:1;cursor:pointer;border-radius:4px}
+#pk-helpgo{background:var(--pk-ink);color:var(--pk-paper);border:1px solid var(--pk-ink);padding:10px 14px}
+#pk-helpclose{background:transparent;color:var(--pk-ink);border:1px solid var(--pk-rule);padding:4px 10px;font-size:18px}
+#pk-help button:hover,#pk-help button:focus-visible{outline:2px solid var(--pk-accent);outline-offset:2px}
 /* on the index the tools have nothing to draw on; the index notes say so */
 body.pk-index #tools [data-tool],body.pk-index #tools .clear{opacity:.4}
-#hud{position:fixed;right:64px;bottom:14px;display:flex;gap:8px;align-items:center;z-index:6;opacity:0;transition:opacity .25s;font-family:var(--pk-mono);font-size:13px;letter-spacing:.1em;color:var(--pk-fg)}
+#hud{position:fixed;right:16px;bottom:62px;display:flex;gap:8px;align-items:center;z-index:6;opacity:0;transition:opacity .25s;font-family:var(--pk-mono);font-size:13px;letter-spacing:.1em;color:var(--pk-fg)}
 body.show-hud #hud{opacity:1}
-body.notes-open #hud{right:calc(min(660px,50vw) + 18px);bottom:calc(176px + 14px)}
+body.notes-open #hud{right:calc(min(660px,50vw) + 18px);bottom:calc(176px + 62px + 14px)}
 #hud button{background:rgba(20,19,14,.85);color:var(--pk-fg);border:1px solid var(--pk-line);border-radius:4px;font:inherit;padding:7px 12px;cursor:pointer;letter-spacing:.1em}
 #hud button:hover,#hud button:focus-visible{border-color:var(--pk-accent);outline:none}
 #hud .count{padding:0 8px;font-variant-numeric:tabular-nums}
@@ -116,7 +146,11 @@ body.notes-open #notes{transform:none}
 #nextframe{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--pk-line);background:var(--pk-paper)}
 #nextframe .slide{display:block;position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
 #nextframe .idx{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--pk-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pk-mute)}
-#sync{font-family:var(--pk-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pk-fg-mute);margin:0 0 14px}
+#sync{display:flex;align-items:center;gap:10px;min-height:26px;font-family:var(--pk-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pk-fg-mute);margin:0 0 14px}
+/* the way to the second window. It goes once a second window has answered. */
+#pkAudience{margin-left:auto;background:var(--pk-accent);color:#17160F;border:1px solid var(--pk-accent);border-radius:4px;font:inherit;font-weight:500;padding:5px 10px;cursor:pointer;white-space:nowrap}
+#pkAudience:hover,#pkAudience:focus-visible{outline:2px solid var(--pk-fg);outline-offset:2px}
+#sync.paired #pkAudience{display:none}
 #sync b{color:var(--pk-accent);font-weight:500}
 /* presenter: clock */
 #clock{border:1px solid var(--pk-line);padding:6px 10px;margin:0 0 16px;background:rgba(255,255,255,.03)}
@@ -197,4 +231,4 @@ body.notes-open #tools{display:flex}
 #tools .sw.on{border-color:#fff;box-shadow:0 0 0 2px var(--pk-accent)}
 
 #tools .clear{color:#FF8A65}
-@media (prefers-reduced-motion:reduce){#progress,#notes,#hud,#pk-present{transition:none}}
+@media (prefers-reduced-motion:reduce){#progress,#notes,#hud,#pk-present,#pk-helpbtn{transition:none}}

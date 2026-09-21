@@ -109,6 +109,7 @@ Testing what an assistant produced: run the deck three ways, because they fail d
 - **Print and PDF**: a print stylesheet that lays slides out one per page at the stage size.
 - **README evaluation**: give the same vague prompt to several assistants with only the repo link and fix whatever the README fails to prevent. Do this before any change to the agent instructions.
 - **GitHub Pages**: serve `template.html` from the repo so the live example has a stable address.
+- **Brand discovery**: when a person names a company, the agent should look for that company's published brand kit before styling the deck (a `/brand` page, a Brand section in `llms.txt`, `Organization.logo` in schema, or a brand tool on the site's MCP server) and map the logo, palette and type onto the deck styles and the `--pk-*` tokens. Today most sites offer this only to humans, if at all (Clay, for example, puts a PNG and a zip behind a right-click on its logo); the README should tell agents where to look and to fall back to a neutral treatment rather than a scraped footer image.
 
 Out of scope for `main`: Markdown authoring, animation frameworks, PPTX export, multi-machine sync over a server, a theme marketplace.
 
